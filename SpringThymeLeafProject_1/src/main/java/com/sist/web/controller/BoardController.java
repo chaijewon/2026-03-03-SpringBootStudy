@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.*;
 import com.sist.web.entity.*;
 import com.sist.web.service.*;
+import com.sist.web.vo.BoardDTO;
 
 import lombok.RequiredArgsConstructor;
 @Controller
@@ -73,7 +74,7 @@ public class BoardController {
 		   page="1";
 	   int curpage=Integer.parseInt(page);
 	   int start=(curpage*10)-10;
-	   List<BoardEntity> list=bService.boardListData(start);
+	   List<BoardDTO> list=bService.boardListData(start);
 	   int count=bService.boardCount();
 	   int totalpage=(int)(Math.ceil(count/10.0));
 	   
@@ -106,5 +107,55 @@ public class BoardController {
    {
 	   bService.boardInsert(vo);
 	   return "redirect:/board/list";
+   }
+   
+   @GetMapping("delete")
+   public String board_delete(@RequestParam("no") int no,
+		   Model model)
+   {
+	   model.addAttribute("no", no);
+	   return "/board/delete";
+   }
+   
+   @PostMapping("delete_ok")
+   public String board_delete_ok(@RequestParam("no") int no,
+		   @RequestParam("pwd") String pwd,Model model)
+   {
+	   String res="no";
+	   BoardEntity vo=bService.findByNo(no);
+	   if(vo.getPwd().equals(pwd))
+	   {
+		   res="yes";
+		   bService.boardDelete(vo); // delete()
+	   }
+	   model.addAttribute("res", res);
+	   return "/board/delete_ok";
+   }
+   
+   @GetMapping("update")
+   public String board_update(@RequestParam("no") int no,
+		   Model model)
+   {
+	   BoardEntity vo=bService.findByNo(no);
+	   model.addAttribute("vo", vo);
+	   return "/board/update";
+   }
+   
+   @PostMapping("update_ok")
+   public String board_update_ok(@ModelAttribute("vo") BoardEntity vo,
+		   Model model)
+   {
+	   BoardEntity dbVO=bService.findByNo(vo.getNo());
+	   String res="no";
+	   if(vo.getPwd().equals(dbVO.getPwd()))
+	   {
+		    vo.setNo(vo.getNo());
+		    vo.setHit(dbVO.getHit());
+		    bService.boardUpdate(vo);
+		    res="yes";
+	   }
+	   model.addAttribute("res", res);
+	   model.addAttribute("no", vo.getNo());
+	   return "/board/update_ok";
    }
 }

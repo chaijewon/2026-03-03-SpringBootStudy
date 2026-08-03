@@ -71,6 +71,7 @@ public class BoardEntity {
    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "jpb_no_seq")
    private int no;
    private String name,subject,content;
+   
    @Column(insertable = true,updatable = false)
    private String pwd;
    
