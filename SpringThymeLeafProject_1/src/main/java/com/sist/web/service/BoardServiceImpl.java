@@ -18,7 +18,7 @@ public class BoardServiceImpl implements BoardService{
 	// TODO Auto-generated method stub
 	return dao.findByNo(no);
    }
-
+   
    @Override
    public List<BoardEntity> boardListData(int start) {
 	// TODO Auto-generated method stub

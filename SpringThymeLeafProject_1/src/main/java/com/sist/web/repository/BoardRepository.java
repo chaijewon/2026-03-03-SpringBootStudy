@@ -15,7 +15,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer>{
 	public BoardEntity findByNo(int no); // 상세보기 
 	
 	// 직접 SQL문장을 생성 => findAll(Page)
-	@Query(value="SELECT * FROM board ORDER BY no DESC "
+	@Query(value="SELECT * FROM jpaboard ORDER BY no DESC "
 		 +"OFFSET :start ROWS FETCH NEXT 10 ROWS ONLY",
 		 nativeQuery = true) // SQL을 JPQL로 변경없이 문장 그대로 수행
 	public List<BoardEntity> boardListData(@Param("start") Integer start);
