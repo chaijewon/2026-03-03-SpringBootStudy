@@ -140,7 +140,17 @@ public class BoardController {
 	   model.addAttribute("vo", vo);
 	   return "/board/update";
    }
-   
+   // 서버는 동일 
+   // 데이터베이스 => MyBatis => JPA
+   // 화면 출력 => JSP => ThymeLeaf 
+   // 배포 : Maven => Gradle : 배포가 편리 
+   // Spring / SpringBoot
+   //          | 내장 Tomcat
+   // | 외장 Tomcat 
+   // Front => EL사용이 동일 = 문법사항 
+   // => Vue 
+   // MVC의 동작 구조는 동일 
+   // => SpringBoot는 서버로 특화 
    @PostMapping("update_ok")
    public String board_update_ok(@ModelAttribute("vo") BoardEntity vo,
 		   Model model)
