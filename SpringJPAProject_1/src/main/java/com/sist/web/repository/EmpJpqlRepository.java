@@ -49,6 +49,7 @@ import com.sist.web.entity.Emp;
 public interface EmpJpqlRepository 
 extends JpaRepository<Emp, Integer>
 {
+	
     @Query("SELECT e FROM Emp e") 
     // Emp는 테이블이 아니고 Entity 객체명 
     // 반드시 별칭을 사용해야 된다 
@@ -97,7 +98,7 @@ extends JpaRepository<Emp, Integer>
     // List<Emp> findByDeptDnameContains(String dname);
     @Query("SELECT e FROM Emp e "
       	  +"JOIN e.dept d "
-      	  +"WHERE d.dname LIKE CONCAT('%',:dname,'%'")
+      	  +"WHERE d.dname LIKE CONCAT('%',:dname,'%')")
     List<Emp> findByDeptDnameContains(
     		@Param("dname") String dname);
     
@@ -174,5 +175,8 @@ extends JpaRepository<Emp, Integer>
     	  +"WHERE e.job<>:job")
     List<Emp> findByJobNot(@Param("job") String job);
     
-    
+    // List<Emp> findByDeptDeptnoIn(List<Integer> deptnos);
+    @Query("SELECT e FROM Emp e "
+    	  +"WHERE e.dept.deptno IN :deptnos")
+    List<Emp> findByDeptDeptnoIn(@Param("deptnos")List<Integer> deptnos);
 }

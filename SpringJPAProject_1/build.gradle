@@ -12,6 +12,11 @@ java {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 repositories {
 	mavenCentral()
@@ -41,6 +46,21 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+}
+// Q클래스 생성 경로 설정 (src/main/generated 경로로 지정)
+def generated = 'src/main/generated'
+
+sourceSets {
+    main.java.srcDirs += [ generated ]
+}
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorPath = configurations.annotationProcessor
+    options.generatedSourceOutputDirectory = file(generated)
+}
+
+clean {
+    delete file(generated)
 }
 
 tasks.named('test') {
